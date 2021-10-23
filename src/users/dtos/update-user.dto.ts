@@ -9,19 +9,20 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Company } from 'src/companies/models/companies.model';
 
-export class SignupUserDto {
+export class UpdateUserDto {
   @ApiProperty({
     description: 'The email of the user.',
     example: 'user1@x.com',
     minLength: 5,
     maxLength: 50,
     type: String,
-    required: true,
+    required: false,
   })
   @IsString()
   @MinLength(5)
   @MaxLength(100)
   @IsEmail()
+  @IsOptional()
   email: string;
 
   @ApiProperty({
@@ -32,13 +33,15 @@ export class SignupUserDto {
     required: true,
   })
   @IsString()
+  @IsOptional()
   @MaxLength(100)
   name: string;
 
   @ApiProperty({
     type: Company,
-    required: true,
+    required: false,
   })
+  @IsOptional()
   @IsMongoId()
   company: Company;
 

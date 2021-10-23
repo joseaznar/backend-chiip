@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../models/users.model';
 import { DatabaseErrorDto } from 'src/common/dto/errors/database-error.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -59,5 +60,15 @@ export class UserRepository {
     }
 
     return user.toObject();
+  }
+
+  async update(userId, userData: UpdateUserDto): Promise<User> {
+    const user = await this.userModel.findByIdAndUpdate(userId, userData);
+
+    if (!user) {
+      throw new BadRequestException('No se pudo actualizar el usuario');
+    }
+
+    return user;
   }
 }

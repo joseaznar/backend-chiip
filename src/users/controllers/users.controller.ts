@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiSecurity } from '@nestjs/swagger';
 import { User } from '../models/users.model';
 import { UsersService } from '../services/users.service';
@@ -6,6 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FindByIdParams } from 'src/common/dto/params/find-by-id-params.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
 import { FindByIdBBVAParams } from '../dtos/find-by-idBBVA-params.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 /**
  * Any incoming request to /users will be handled by this controller thanks to the controller decorator.
@@ -47,5 +48,14 @@ export class UsersController {
   @Post('')
   async signup(@Body() signupUserDto: SignupUserDto): Promise<User> {
     return this.userService.signUp(signupUserDto);
+  }
+
+  @UseGuards(AuthGuard('api-key'))
+  @Patch(':id')
+  async update(
+    @Param() params: FindByIdParams,
+    @Body() userData: UpdateUserDto,
+  ): Promise<User> {
+    return this.userService.update(params.id, userData);
   }
 }
