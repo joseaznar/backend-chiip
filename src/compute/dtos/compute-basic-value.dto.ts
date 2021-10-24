@@ -47,37 +47,42 @@ export class ComputeBasicValueDto {
 
   @ApiProperty({
     description:
-      'Código que identifica el grupo empresarial al que pertence cada cliente',
-    type: String,
-    required: true,
-  })
-  @IsString()
-  @MaxLength(100)
-  cd_grupo: string;
-
-  @ApiProperty({
-    description:
-      'Nivel de grupo de acuerdo al nivel de rentabilidad y ventas asociadas al grupo',
-    type: String,
-    required: true,
-  })
-  @IsString()
-  @MaxLength(100)
-  nivel_grupo: string;
-
-  @ApiProperty({
-    description: 'Código de sector económico al cual pertenece cada empresa',
-    type: String,
-    required: true,
-  })
-  @IsString()
-  @MaxLength(100)
-  tp_sector: string;
-
-  @ApiProperty({
-    description:
       'Código de estado de la republica al que pertenece el domicilio del cliente',
     type: String,
+    enum: [
+      'AG',
+      'BN',
+      'BS',
+      'CA',
+      'CP',
+      'CH',
+      'DF',
+      'CU',
+      'CO',
+      'DU',
+      'EM',
+      'GO',
+      'GU',
+      'HI',
+      'JA',
+      'MI',
+      'MO',
+      'NA',
+      'NL',
+      'OA',
+      'PU',
+      'QU',
+      'QR',
+      'SL',
+      'SI',
+      'SO',
+      'TA',
+      'TM',
+      'TL',
+      'VE',
+      'YU',
+      'ZA',
+    ],
     required: true,
   })
   @IsString()
@@ -88,6 +93,24 @@ export class ComputeBasicValueDto {
     description:
       'Nombre del sector económico o actividad económica que práctica el cliente',
     type: String,
+    enum: [
+      'Autos, components & Durable goods',
+      'Basic Materials',
+      'Capital goods & Industrial service',
+      'Construction & Construction Materials',
+      'Consumer',
+      'Energy (Oil & Gas)',
+      'Financial Institutions',
+      'Financial Services',
+      'Healthcare',
+      'Institutions',
+      'Leisure & Consumer Services',
+      'Real Estate',
+      'Retail',
+      'Telecoms, Technology & Media',
+      'Transportation',
+      'Utilities'
+    ],
     required: true,
   })
   @IsString()
@@ -113,7 +136,7 @@ export class ComputeBasicValueDto {
   @IsString()
   @IsOptional()
   @MaxLength(100)
-  nm_sub_sector: string;
+  nm_sub_sector?: string;
 
   @ApiProperty({
     description:
@@ -122,68 +145,35 @@ export class ComputeBasicValueDto {
     required: false,
   })
   @IsNumber()
-  tiempoBiodegradadoConsumo: number;
+  @IsOptional()
+  tiempoBiodegradadoConsumo?: number;
 
   @ApiProperty({
-    description:
-      'Si tiene o no manejo de residuos',
+    description: 'Si tiene o no manejo de residuos',
     type: Boolean,
     required: false,
   })
   @IsBoolean()
-  tieneManejoResiduos: boolean;
+  @IsOptional()
+  tieneManejoResiduos?: boolean;
 
   @ApiProperty({
-    description:
-      'Si tiene o no reciclaje',
+    description: 'Si tiene o no reciclaje',
     type: Boolean,
     required: false,
   })
   @IsBoolean()
-  tieneReciclaje: boolean;
-
+  @IsOptional()
+  tieneReciclaje?: boolean;
 
   @ApiProperty({
-    description:
-      'Si tiene o no viajes de negocio',
+    description: 'Si tiene o no viajes de negocio',
     type: Boolean,
     required: false,
   })
   @IsBoolean()
-  tieneViajes: boolean;
-
-  @ApiProperty({
-    description:
-      'Monto de los recursos en promedio que el cliente deja en cuentas de cheques o inversiones',
-    type: Number,
-    required: true,
-  })
-  @IsNumber()
-  recursos: number;
-
-  @ApiProperty({
-    description: 'Monto del credito otorgado en promedio al cliente',
-    type: Number,
-    required: true,
-  })
-  @IsNumber()
-  credito: number;
-
-  @ApiProperty({
-    description: 'Monto pagado a cfe acumulado en los últimos 12 meses',
-    type: Number,
-    required: true,
-  })
-  @IsNumber()
-  rentabilidad: number;
-
-  @ApiProperty({
-    description: 'Monto pagado a cfe acumulado en los últimos 12 meses',
-    type: Number,
-    required: true,
-  })
-  @IsNumber()
-  consumo_cfe_12m: number;
+  @IsOptional()
+  tieneViajes?: boolean;
 
   @ApiProperty({
     description:
@@ -201,4 +191,13 @@ export class ComputeBasicValueDto {
   })
   @IsString()
   idBBVA: string;
+
+  @ApiProperty({
+    description:
+      'Número de personas en la empresa',
+    type: Number,
+    required: true,
+  })
+  @IsNumber()
+  cantidadPersonas: number;
 }

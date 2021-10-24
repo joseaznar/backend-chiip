@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FindByIdQuery } from 'src/common/dto/query/find-by-id-query.dto';
 import { CompanyService } from 'src/companies/services/companies.service';
 import { UsersService } from 'src/users/services/users.service';
@@ -61,7 +61,12 @@ export class ComputesService {
 
     let value = 0;
     try {
-      value += industries[data.nm_sector];
+      value += parseFloat(`${industries[data.nm_sector]}`);
+      
+      if (isNaN(value)) {
+        value = 0
+        throw new BadRequestException()
+      }
     } catch (e) {
       value += industries[data.nm_sector][data.nm_sub_sector];
     }
@@ -119,7 +124,10 @@ export class ComputesService {
 
     const tco2e = 0.494;
 
-    value += (data.pagos_cfe_12m * tco2e) / (estados[data.cd_estado] * 1000);
+    value += (data.pagos_cfe_12m * tco2e) / (parseFloat(`${estados[data.cd_estado]}`) * 1000);
+
+
+    value = value * (data.cantidadPersonas / 10);
 
     const computation = await this.repository.computeBasicValue(data, value);
 

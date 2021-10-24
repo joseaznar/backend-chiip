@@ -59,6 +59,13 @@ export class Company {
   recursos: number;
 
   @ApiProperty({
+    description: "Cantidad de personas en la empresa",
+  })
+  // #endregion Documentation
+  @Prop()
+  cantidadPersonas: number;
+
+  @ApiProperty({
     description: "Monto del credito otorgado en promedio al cliente",
   })
   // #endregion Documentation

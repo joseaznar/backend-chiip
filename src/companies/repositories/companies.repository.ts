@@ -76,26 +76,18 @@ export class CompanyRepository {
 
     const companyInfo = {
       cd_estado: data.cd_estado,
-      cd_grupo: data.cd_grupo,
-      consumo_cfe_12m: data.consumo_cfe_12m,
-      credito: data.credito,
       nm_sector: data.nm_sector,
       name: data.nameCompany,
-      nivel_grupo: data.nivel_grupo,
       pagos_cfe_12m: data.pagos_cfe_12m,
-      recursos: data.recursos,
-      rentabilidad: data.rentabilidad,
-      tp_sector: data.tp_sector,
       cd_cliente: data.idBBVA,
       index: maxIndex.index + 1,
+      cantidadPersonas: data.cantidadPersonas
     };
 
-    const company = await (
-      await this.companyModel.findOneAndUpdate(
-        { cd_cliente: data.idBBVA },
-        companyInfo,
-        { upsert: true },
-      )
+    const company = await await this.companyModel.findOneAndUpdate(
+      { cd_cliente: data.idBBVA },
+      companyInfo,
+      { upsert: true },
     );
 
     return;
