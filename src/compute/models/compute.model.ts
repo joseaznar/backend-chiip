@@ -41,7 +41,7 @@ export class Compute {
   })
   // #endregion Documentation
   @Prop({ default: Date.now() })
-  createedAt: Date;
+  createdAt: Date;
 }
 
 export const ComputeSchema = SchemaFactory.createForClass(Compute);
