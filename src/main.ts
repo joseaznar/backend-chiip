@@ -7,6 +7,7 @@ import customCss from './config/swagger-material.theme';
 import { json } from 'express';
 import { ValidationPipe } from '@nestjs/common';
 import { CompanyModule } from './companies/companies.module';
+import { ComputeModule } from './compute/compute.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,10 +27,14 @@ async function bootstrap() {
       'Companies',
       'Operations linked to reading and updating companies information.',
     )
+    .addTag(
+      'Computations',
+      'Operations linked to reading and creating computations.',
+    )
     .addApiKey({type: 'apiKey', name: 'X-API-KEY', in: 'header'}, 'X-API-KEY')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerOptions, {
-    include: [AuthModule, UsersModule, CompanyModule],
+    include: [AuthModule, UsersModule, CompanyModule, ComputeModule],
   });
   SwaggerModule.setup('/v1/docs', app, document, {
     customCss,
