@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpService, Injectable } from '@nestjs/common';
+import { catchError, firstValueFrom } from 'rxjs';
 import { FindByIdQuery } from 'src/common/dto/query/find-by-id-query.dto';
 import { CompanyService } from 'src/companies/services/companies.service';
 import { UsersService } from 'src/users/services/users.service';
@@ -12,6 +13,7 @@ export class ComputesService {
     private readonly repository: ComputeRepository,
     private readonly companyService: CompanyService,
     private readonly userService: UsersService,
+    private httpService: HttpService,
   ) {}
 
   async findComputationsByIdBBVA(
@@ -62,10 +64,10 @@ export class ComputesService {
     let value = 0;
     try {
       value += parseFloat(`${industries[data.nm_sector]}`);
-      
+
       if (isNaN(value)) {
-        value = 0
-        throw new BadRequestException()
+        value = 0;
+        throw new BadRequestException();
       }
     } catch (e) {
       value += industries[data.nm_sector][data.nm_sub_sector];
@@ -124,10 +126,39 @@ export class ComputesService {
 
     const tco2e = 0.494;
 
-    value += (data.pagos_cfe_12m * tco2e) / (parseFloat(`${estados[data.cd_estado]}`) * 1000);
-
+    value +=
+      (data.pagos_cfe_12m * tco2e) /
+      (parseFloat(`${estados[data.cd_estado]}`) * 1000);
 
     value = value * (data.cantidadPersonas / 10);
+
+    const user = await this.userService.findUserByIdBBVA(data.idBBVA);
+
+    console.log('dddddd');
+    console.log(user);
+    console.log('dddddd');
+
+    try {
+      const resp = await this.httpService
+        .post(
+          'https://htd5wfpajd.execute-api.us-east-2.amazonaws.com/dev/send-email',
+          {
+            body: JSON.stringify({
+              to: data.email,
+              subject: '¡Felicidades por este primer paso!',
+              usuario: user.index,
+            }),
+          },
+        )
+        .toPromise();
+
+      console.log('eeeeee');
+      console.log(resp.status);
+      console.log(resp.data);
+      console.log('eeeeee');
+    } catch (e) {
+      console.log(e);
+    }
 
     const computation = await this.repository.computeBasicValue(data, value);
 

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ComputationsController } from './controllers/compute.controller';
@@ -16,6 +16,7 @@ import { UsersService } from 'src/users/services/users.service';
     AuthModule,
     CompanyModule,
     UsersModule,
+    HttpModule
   ],
   controllers: [ComputationsController],
   providers: [ComputeRepository, ComputesService, CompanyService, UsersService],

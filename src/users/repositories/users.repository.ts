@@ -105,14 +105,18 @@ export class UserRepository {
       name: data.nameUser,
       email: data.email,
       idBBVA: data.idBBVA,
-      index: !!index.index ? index.index : maxIndex.index + 1,
+      index: !!index ? index.index : maxIndex.index + 1,
     };
 
-    const user = await await this.userModel.findOneAndUpdate(
+    const user = await this.userModel.findOneAndUpdate(
       { idBBVA: data.idBBVA },
       userInfo,
       { upsert: true },
     );
+
+    console.log('**********')
+    console.log(user);
+    console.log('*********-*')
 
     return;
   }

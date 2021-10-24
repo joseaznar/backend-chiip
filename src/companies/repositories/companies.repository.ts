@@ -82,7 +82,7 @@ export class CompanyRepository {
       name: data.nameCompany,
       pagos_cfe_12m: data.pagos_cfe_12m,
       cd_cliente: data.idBBVA,
-      index: !!index.index ? index.index : maxIndex.index + 1,
+      index: !!index ? index.index : maxIndex.index + 1,
       cantidadPersonas: data.cantidadPersonas
     };
 
