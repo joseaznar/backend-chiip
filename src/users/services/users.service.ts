@@ -22,8 +22,8 @@ export class UsersService {
    */
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly companyService: CompanyService
-    ) {}
+    private readonly companyService: CompanyService,
+  ) {}
 
   async findUserById(userId: string, query?: FindByIdQuery): Promise<User> {
     const user = await this.userRepository.findUserById(userId, query);
@@ -31,17 +31,24 @@ export class UsersService {
     return user;
   }
 
-  async findUserByIdBBVA(userIdBBVA: string, query?: FindByIdQuery): Promise<User> {
+  async findUserByIdBBVA(
+    userIdBBVA: string,
+    query?: FindByIdQuery,
+  ): Promise<any> {
     const user = await this.userRepository.findUserByIdBBVA(userIdBBVA, query);
+    const company = await this.companyService.findCompanyByIdBBVA(user.idBBVA);
 
-    return user;
+    return { nameUser: user.name, ...user, ...company };
   }
 
-  async findUserByIndex(userIndex: number, query?: FindByIdQuery): Promise<any> {
+  async findUserByIndex(
+    userIndex: number,
+    query?: FindByIdQuery,
+  ): Promise<any> {
     const user = await this.userRepository.findUserByIndex(userIndex, query);
     const company = await this.companyService.findCompanyByIdBBVA(user.idBBVA);
-    
-    return {nameUser: user.name, ...user, ...company};
+
+    return { nameUser: user.name, ...user, ...company };
   }
 
   async signUp(userData: SignupUserDto): Promise<User> {
