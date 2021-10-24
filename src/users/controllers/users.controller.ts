@@ -40,7 +40,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('api-key'))
-  @Get(':idBBVA')
+  @Get('bbva/:idBBVA')
   async getUserByIdBBVA(@Param() params: FindByIdBBVAParams): Promise<User> {
     return this.userService.findUserByIdBBVA(params.idBBVA);
   }

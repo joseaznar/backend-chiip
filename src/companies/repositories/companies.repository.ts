@@ -73,6 +73,7 @@ export class CompanyRepository {
 
   async upsert(data: ComputeBasicValueDto): Promise<void> {
     const maxIndex = await this.companyModel.findOne().sort('-index').exec();
+    const index = await this.companyModel.findOne({ cd_cliente: data.idBBVA }).exec();
 
     const companyInfo = {
       cd_estado: data.cd_estado,
@@ -80,7 +81,7 @@ export class CompanyRepository {
       name: data.nameCompany,
       pagos_cfe_12m: data.pagos_cfe_12m,
       cd_cliente: data.idBBVA,
-      index: maxIndex.index + 1,
+      index: !!index.index ? index.index : maxIndex.index + 1,
       cantidadPersonas: data.cantidadPersonas
     };
 

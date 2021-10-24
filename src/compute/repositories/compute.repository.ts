@@ -41,7 +41,7 @@ export class ComputeRepository {
     return objects;
   }
 
-  async computeBasicValue(data: ComputeBasicValueDto, value: number): Promise<Compute> {
+  async computeBasicValue(data: ComputeBasicValueDto, value: number): Promise<any> {
     const computation = await (await this.model.create({
       idBBVA: data.idBBVA,
       basicValue: value,
@@ -51,6 +51,6 @@ export class ComputeRepository {
       throw new BadRequestException('No se pudo realizar el cálculo');
     }
 
-    return computation.toObject();
+    return {...computation.toObject(), nm_sector: data.nm_sector};
   }
 }

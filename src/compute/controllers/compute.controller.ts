@@ -20,7 +20,7 @@ export class ComputationsController {
 
   @UseGuards(AuthGuard('api-key'))
   @Post('')
-  async computeBasicValue(@Body() dto: ComputeBasicValueDto): Promise<Compute> {
+  async computeBasicValue(@Body() dto: ComputeBasicValueDto): Promise<any> {
     return this.service.computeBasicValue(dto);
   }
 }

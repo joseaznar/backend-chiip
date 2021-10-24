@@ -99,20 +99,19 @@ export class UserRepository {
 
   async upsert(data: ComputeBasicValueDto): Promise<void> {
     const maxIndex = await this.userModel.findOne().sort('-index').exec();
+    const index = await this.userModel.findOne({ idBBVA: data.idBBVA }).exec();
 
     const userInfo = {
       name: data.nameUser,
       email: data.email,
       idBBVA: data.idBBVA,
-      index: maxIndex.index + 1,
+      index: !!index.index ? index.index : maxIndex.index + 1,
     };
 
-    const user = await (
-      await this.userModel.findOneAndUpdate(
-        { idBBVA: data.idBBVA },
-        userInfo,
-        { upsert: true }
-      )
+    const user = await await this.userModel.findOneAndUpdate(
+      { idBBVA: data.idBBVA },
+      userInfo,
+      { upsert: true },
     );
 
     return;
