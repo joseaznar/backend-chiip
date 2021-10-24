@@ -26,6 +26,12 @@ export class CompanyService {
     return company;
   }
 
+  async findCompanyByIdBBVA(idBBVA: string, query?: FindByIdQuery): Promise<Company> {
+    const company = await this.companyRepository.findCompanyByIdBBVA(idBBVA, query);
+
+    return company;
+  }
+
   async create(data: CreateCompanyDto): Promise<Company> {
     const company = await this.companyRepository.create(data);
 

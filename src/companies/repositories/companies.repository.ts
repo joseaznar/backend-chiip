@@ -30,7 +30,25 @@ export class CompanyRepository {
       .exec();
 
     if (!Company) {
-      throw new NotFoundException('No se encontró el usuario');
+      throw new NotFoundException('No se encontró la compañia');
+    }
+
+    return Company.toObject();
+  }
+
+  async findCompanyByIdBBVA(
+    idBBVA: string,
+    query?: FindByIdQuery,
+  ): Promise<Company> {
+    const { projection } = aqp(query);
+
+    const Company = await this.companyModel
+      .findOne({ cd_cliente: idBBVA })
+      .select(projection)
+      .exec();
+
+    if (!Company) {
+      throw new NotFoundException('No se encontró la compañia');
     }
 
     return Company.toObject();
@@ -76,7 +94,7 @@ export class CompanyRepository {
       await this.companyModel.findOneAndUpdate(
         { cd_cliente: data.idBBVA },
         companyInfo,
-        { upsert: true }
+        { upsert: true },
       )
     ).save();
 

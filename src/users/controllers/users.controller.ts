@@ -47,7 +47,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard('api-key'))
   @Get(':index')
-  async getUserByindex(@Param() params: FindByIndexParams): Promise<User> {
+  async getUserByindex(@Param() params: FindByIndexParams): Promise<any> {
     return this.userService.findUserByIndex(params.index);
   }
 

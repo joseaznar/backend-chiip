@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FindByIdQuery } from 'src/common/dto/query/find-by-id-query.dto';
+import { CompanyService } from 'src/companies/services/companies.service';
 import { ComputeBasicValueDto } from 'src/compute/dtos/compute-basic-value.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
@@ -19,7 +20,10 @@ export class UsersService {
    *
    * @memberof UsersController
    */
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly companyService: CompanyService
+    ) {}
 
   async findUserById(userId: string, query?: FindByIdQuery): Promise<User> {
     const user = await this.userRepository.findUserById(userId, query);
@@ -33,10 +37,11 @@ export class UsersService {
     return user;
   }
 
-  async findUserByIndex(userIndex: number, query?: FindByIdQuery): Promise<User> {
+  async findUserByIndex(userIndex: number, query?: FindByIdQuery): Promise<any> {
     const user = await this.userRepository.findUserByIndex(userIndex, query);
-
-    return user;
+    const company = await this.companyService.findCompanyByIdBBVA(user.idBBVA);
+    
+    return {nameUser: user.name, ...user, ...company};
   }
 
   async signUp(userData: SignupUserDto): Promise<User> {
