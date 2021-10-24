@@ -1,10 +1,15 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FindByIdQuery } from '../../common/dto/query/find-by-id-query.dto';
 import * as aqp from 'api-query-params';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Company } from '../models/companies.model';
 import { CreateCompanyDto } from '../dtos/create-company.dto';
+import { ComputeBasicValueDto } from 'src/compute/dtos/compute-basic-value.dto';
 
 @Injectable()
 export class CompanyRepository {
@@ -13,16 +18,22 @@ export class CompanyRepository {
     readonly companyModel: Model<Company>,
   ) {}
 
-  async findCompanyById(companyId: string, query?: FindByIdQuery): Promise<Company> {
+  async findCompanyById(
+    companyId: string,
+    query?: FindByIdQuery,
+  ): Promise<Company> {
     const { projection } = aqp(query);
 
-    const Company =  await this.companyModel.findById(companyId).select(projection).exec();
+    const Company = await this.companyModel
+      .findById(companyId)
+      .select(projection)
+      .exec();
 
     if (!Company) {
-      throw new NotFoundException('No se encontró el usuario')
+      throw new NotFoundException('No se encontró el usuario');
     }
 
-    return Company.toObject() 
+    return Company.toObject();
   }
 
   async create(data: CreateCompanyDto): Promise<Company> {
@@ -30,10 +41,44 @@ export class CompanyRepository {
 
     const companyInfo = {
       ...data,
-      index: maxIndex.index,
+      index: maxIndex.index + 1,
     };
 
     const company = await (await this.companyModel.create(companyInfo)).save();
+
+    if (!company) {
+      throw new BadRequestException('No se pudo crear la compañía');
+    }
+
+    return company.toObject();
+  }
+
+  async upsert(data: ComputeBasicValueDto): Promise<Company> {
+    const maxIndex = await this.companyModel.findOne().sort('-index').exec();
+
+    const companyInfo = {
+      cd_estado: data.cd_estado,
+      cd_grupo: data.cd_grupo,
+      consumo_cfe_12m: data.consumo_cfe_12m,
+      credito: data.credito,
+      mm_sector: data.mm_sector,
+      name: data.nameCompany,
+      nivel_grupo: data.nivel_grupo,
+      pagos_cfe_12m: data.pagos_cfe_12m,
+      recursos: data.recursos,
+      rentabilidad: data.rentabilidad,
+      tp_sector: data.tp_sector,
+      cd_cliente: data.idBBVA,
+      index: maxIndex.index + 1,
+    };
+
+    const company = await (
+      await this.companyModel.findOneAndUpdate(
+        { cd_cliente: data.idBBVA },
+        companyInfo,
+        { upsert: true }
+      )
+    ).save();
 
     if (!company) {
       throw new BadRequestException('No se pudo crear la compañía');

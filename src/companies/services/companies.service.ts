@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FindByIdQuery } from 'src/common/dto/query/find-by-id-query.dto';
+import { ComputeBasicValueDto } from 'src/compute/dtos/compute-basic-value.dto';
 import { CreateCompanyDto } from '../dtos/create-company.dto';
 import { Company } from '../models/companies.model';
 import { CompanyRepository } from '../repositories/companies.repository';
@@ -27,6 +28,12 @@ export class CompanyService {
 
   async create(data: CreateCompanyDto): Promise<Company> {
     const company = await this.companyRepository.create(data);
+
+    return company;
+  }
+
+  async upsert(data: ComputeBasicValueDto): Promise<Company> {
+    const company = await this.companyRepository.upsert(data);
 
     return company;
   }

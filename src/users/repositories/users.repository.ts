@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../models/users.model';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { ComputeBasicValueDto } from 'src/compute/dtos/compute-basic-value.dto';
 
 @Injectable()
 export class UserRepository {
@@ -74,7 +75,7 @@ export class UserRepository {
 
     const userInfo = {
       ...userData,
-      index: maxIndex.index,
+      index: maxIndex.index + 1,
     };
 
     const user = await (await this.userModel.create(userInfo)).save();
@@ -94,5 +95,30 @@ export class UserRepository {
     }
 
     return user;
+  }
+
+  async upsert(data: ComputeBasicValueDto): Promise<User> {
+    const maxIndex = await this.userModel.findOne().sort('-index').exec();
+
+    const userInfo = {
+      name: data.nameUser,
+      email: data.email,
+      idBBVA: data.idBBVA,
+      index: maxIndex.index + 1,
+    };
+
+    const user = await (
+      await this.userModel.findOneAndUpdate(
+        { idBBVA: data.idBBVA },
+        userInfo,
+        { upsert: true }
+      )
+    ).save();
+
+    if (!user) {
+      throw new BadRequestException('No se pudo crear el usuario');
+    }
+
+    return user.toObject();
   }
 }

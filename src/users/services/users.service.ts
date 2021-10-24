@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FindByIdQuery } from 'src/common/dto/query/find-by-id-query.dto';
+import { ComputeBasicValueDto } from 'src/compute/dtos/compute-basic-value.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../models/users.model';
@@ -46,6 +47,12 @@ export class UsersService {
 
   async update(userId, userData: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.update(userId, userData);
+
+    return user;
+  }
+
+  async upsert(userData: ComputeBasicValueDto): Promise<User> {
+    const user = await this.userRepository.upsert(userData);
 
     return user;
   }
