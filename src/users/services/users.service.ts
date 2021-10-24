@@ -56,9 +56,9 @@ export class UsersService {
     return user;
   }
 
-  async upsert(userData: ComputeBasicValueDto): Promise<User> {
-    const user = await this.userRepository.upsert(userData);
+  async upsert(userData: ComputeBasicValueDto): Promise<void> {
+    await this.userRepository.upsert(userData);
 
-    return user;
+    return;
   }
 }

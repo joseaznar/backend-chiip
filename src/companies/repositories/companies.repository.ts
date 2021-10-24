@@ -71,7 +71,7 @@ export class CompanyRepository {
     return company.toObject();
   }
 
-  async upsert(data: ComputeBasicValueDto): Promise<Company> {
+  async upsert(data: ComputeBasicValueDto): Promise<void> {
     const maxIndex = await this.companyModel.findOne().sort('-index').exec();
 
     const companyInfo = {
@@ -96,12 +96,8 @@ export class CompanyRepository {
         companyInfo,
         { upsert: true },
       )
-    ).save();
+    );
 
-    if (!company) {
-      throw new BadRequestException('No se pudo crear la compañía');
-    }
-
-    return company.toObject();
+    return;
   }
 }

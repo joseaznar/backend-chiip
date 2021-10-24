@@ -97,7 +97,7 @@ export class UserRepository {
     return user;
   }
 
-  async upsert(data: ComputeBasicValueDto): Promise<User> {
+  async upsert(data: ComputeBasicValueDto): Promise<void> {
     const maxIndex = await this.userModel.findOne().sort('-index').exec();
 
     const userInfo = {
@@ -113,12 +113,8 @@ export class UserRepository {
         userInfo,
         { upsert: true }
       )
-    ).save();
+    );
 
-    if (!user) {
-      throw new BadRequestException('No se pudo crear el usuario');
-    }
-
-    return user.toObject();
+    return;
   }
 }

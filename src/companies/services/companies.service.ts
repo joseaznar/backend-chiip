@@ -38,9 +38,9 @@ export class CompanyService {
     return company;
   }
 
-  async upsert(data: ComputeBasicValueDto): Promise<Company> {
-    const company = await this.companyRepository.upsert(data);
+  async upsert(data: ComputeBasicValueDto): Promise<void> {
+    await this.companyRepository.upsert(data);
 
-    return company;
+    return;
   }
 }

@@ -27,8 +27,9 @@ export class ComputesService {
   }
 
   async computeBasicValue(data: ComputeBasicValueDto): Promise<Compute> {
-    const company = await this.companyService.upsert(data);
-    const user = await this.userService.upsert(data);
+    await this.companyService.upsert(data);
+    await this.userService.upsert(data);
+    
     const computation = await this.repository.computeBasicValue(data);
 
     return computation;
