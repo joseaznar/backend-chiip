@@ -26,7 +26,6 @@ async function bootstrap() {
       'Companies',
       'Operations linked to reading and updating companies information.',
     )
-    .addTag('Auth', 'Operations linked to user authentication and creation.')
     .addApiKey({type: 'apiKey', name: 'X-API-KEY', in: 'header'}, 'X-API-KEY')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerOptions, {
