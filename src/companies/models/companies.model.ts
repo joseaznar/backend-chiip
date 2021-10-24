@@ -52,6 +52,13 @@ export class Company {
   nm_sector: string;
 
   @ApiProperty({
+    description: "Nombre del sub sector económico o actividad económica que práctica el cliente",
+  })
+  // #endregion Documentation
+  @Prop()
+  nm_sub_sector: string;
+
+  @ApiProperty({
     description: "Monto de los recursos en promedio que el cliente deja en cuentas de cheques o inversiones",
   })
   // #endregion Documentation

@@ -78,6 +78,7 @@ export class CompanyRepository {
     const companyInfo = {
       cd_estado: data.cd_estado,
       nm_sector: data.nm_sector,
+      nm_sub_sector: data.nm_sub_sector,
       name: data.nameCompany,
       pagos_cfe_12m: data.pagos_cfe_12m,
       cd_cliente: data.idBBVA,
