@@ -49,7 +49,7 @@ export class Company {
   })
   // #endregion Documentation
   @Prop()
-  mm_sector: string;
+  nm_sector: string;
 
   @ApiProperty({
     description: "Monto de los recursos en promedio que el cliente deja en cuentas de cheques o inversiones",

@@ -41,10 +41,10 @@ export class ComputeRepository {
     return objects;
   }
 
-  async computeBasicValue(data: ComputeBasicValueDto): Promise<Compute> {
+  async computeBasicValue(data: ComputeBasicValueDto, value: number): Promise<Compute> {
     const computation = await (await this.model.create({
       idBBVA: data.idBBVA,
-      basicValue: 10.2,
+      basicValue: value,
     })).save();
 
     if (!computation) {

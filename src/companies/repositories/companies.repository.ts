@@ -79,7 +79,7 @@ export class CompanyRepository {
       cd_grupo: data.cd_grupo,
       consumo_cfe_12m: data.consumo_cfe_12m,
       credito: data.credito,
-      mm_sector: data.mm_sector,
+      nm_sector: data.nm_sector,
       name: data.nameCompany,
       nivel_grupo: data.nivel_grupo,
       pagos_cfe_12m: data.pagos_cfe_12m,
