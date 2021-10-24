@@ -53,6 +53,24 @@ export class CreateCompanyDto {
   cd_postal: string;
 
   @ApiProperty({
+    description: 'Código de estado de la republica al que pertenece el domicilio del cliente',
+    type: String,
+    required: true,
+  })
+  @IsString()
+  @MaxLength(100)
+  cd_estado: string;
+
+  @ApiProperty({
+    description: 'Código que hay que crear en el front y luego pasar en la creación del usuario en el campo (idBBVA)',
+    type: String,
+    required: true,
+  })
+  @IsString()
+  @MaxLength(100)
+  cd_cliente: string;
+
+  @ApiProperty({
     description: 'Nombre del sector económico o actividad económica que práctica el cliente',
     type: String,
     required: true,

@@ -8,7 +8,6 @@ import * as aqp from 'api-query-params';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../models/users.model';
-import { DatabaseErrorDto } from 'src/common/dto/errors/database-error.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
@@ -52,8 +51,33 @@ export class UserRepository {
     return user.toObject();
   }
 
+  async findUserByIndex(
+    userIndex: number,
+    query?: FindByIdQuery,
+  ): Promise<User> {
+    const { projection } = aqp(query);
+
+    const user = await this.userModel
+      .findOne({ index: userIndex })
+      .select(projection)
+      .exec();
+
+    if (!user) {
+      throw new NotFoundException('No se encontró el usuario');
+    }
+
+    return user.toObject();
+  }
+
   async createUser(userData: SignupUserDto): Promise<User> {
-    const user = await (await this.userModel.create(userData)).save();
+    const maxIndex = await this.userModel.findOne().sort('-index').exec();
+
+    const userInfo = {
+      ...userData,
+      index: maxIndex.index,
+    };
+
+    const user = await (await this.userModel.create(userInfo)).save();
 
     if (!user) {
       throw new BadRequestException('No se pudo crear el usuario');

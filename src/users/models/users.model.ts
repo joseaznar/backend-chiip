@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Company } from 'src/companies/models/companies.model';
-import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -47,14 +45,6 @@ export class User {
   @Prop()
   email: string;
 
-  @ApiProperty({
-    description: "The user's associated company information.",
-    type: Company,
-  })
-  // #endregion Documentation
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Company'  })
-  company: Company;
-
   // #region Documentation
   /**
    * The user\'s email address.
@@ -67,8 +57,16 @@ export class User {
     example: 'mfmsms4medmksk2',
   })
   // #endregion Documentation
-  @Prop({ required: false })
-  idBBVA?: string;
+  @Prop()
+  idBBVA: string;
+
+  @ApiProperty({
+    description: "The user's int id.",
+    example: '3424',
+  })
+  // #endregion Documentation
+  @Prop()
+  index: number
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

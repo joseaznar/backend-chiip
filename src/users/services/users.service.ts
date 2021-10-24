@@ -32,6 +32,12 @@ export class UsersService {
     return user;
   }
 
+  async findUserByIndex(userIndex: number, query?: FindByIdQuery): Promise<User> {
+    const user = await this.userRepository.findUserByIndex(userIndex, query);
+
+    return user;
+  }
+
   async signUp(userData: SignupUserDto): Promise<User> {
     const user = await this.userRepository.createUser(userData);
 

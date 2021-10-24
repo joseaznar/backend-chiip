@@ -85,6 +85,30 @@ export class Company {
   // #endregion Documentation
   @Prop()
   pagos_cfe_12m: number;
+
+  @ApiProperty({
+    description: "The company's state.",
+    example: 'DF',
+  })
+  // #endregion Documentation
+  @Prop()
+  cd_estado: string
+
+  @ApiProperty({
+    description: "The company's client id.",
+    example: 'lkskskk3kdkssk2',
+  })
+  // #endregion Documentation
+  @Prop()
+  cd_cliente: string
+
+  @ApiProperty({
+    description: "The company's int id.",
+    example: '3424',
+  })
+  // #endregion Documentation
+  @Prop()
+  index: number
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

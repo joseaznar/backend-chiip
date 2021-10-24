@@ -3,11 +3,8 @@ import {
   IsEmail,
   MinLength,
   MaxLength,
-  IsOptional,
-  IsMongoId
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Company } from 'src/companies/models/companies.model';
 
 export class SignupUserDto {
   @ApiProperty({
@@ -36,21 +33,13 @@ export class SignupUserDto {
   name: string;
 
   @ApiProperty({
-    type: Company,
-    required: true,
-  })
-  @IsMongoId()
-  company: Company;
-
-  @ApiProperty({
-    description: "The user's BBVA id",
-    example: 'lsl3342XSSss1',
+    description: 'The id given for the user and that was assigned for the company as well (cd_cliente field).',
+    example: 'kdm4slasla1',
     maxLength: 50,
     type: String,
-    required: false,
+    required: true,
   })
   @IsString()
   @MaxLength(100)
-  @IsOptional()
   idBBVA: string;
 }

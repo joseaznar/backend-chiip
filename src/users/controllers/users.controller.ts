@@ -5,8 +5,9 @@ import { UsersService } from '../services/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { FindByIdParams } from 'src/common/dto/params/find-by-id-params.dto';
 import { SignupUserDto } from '../dtos/sign-up-user.dto';
-import { FindByIdBBVAParams } from '../dtos/find-by-idBBVA-params.dto';
+import { FindByIdBBVAParams } from '../dtos/find-by-idBBVA-params.dto copy';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { FindByIndexParams } from '../dtos/find-by-index-params.dto';
 
 /**
  * Any incoming request to /users will be handled by this controller thanks to the controller decorator.
@@ -42,6 +43,12 @@ export class UsersController {
   @Get(':idBBVA')
   async getUserByIdBBVA(@Param() params: FindByIdBBVAParams): Promise<User> {
     return this.userService.findUserByIdBBVA(params.idBBVA);
+  }
+
+  @UseGuards(AuthGuard('api-key'))
+  @Get(':index')
+  async getUserByindex(@Param() params: FindByIndexParams): Promise<User> {
+    return this.userService.findUserByIndex(params.index);
   }
 
   @UseGuards(AuthGuard('api-key'))

@@ -26,7 +26,14 @@ export class CompanyRepository {
   }
 
   async create(data: CreateCompanyDto): Promise<Company> {
-    const company = await (await this.companyModel.create(data)).save();
+    const maxIndex = await this.companyModel.findOne().sort('-index').exec();
+
+    const companyInfo = {
+      ...data,
+      index: maxIndex.index,
+    };
+
+    const company = await (await this.companyModel.create(companyInfo)).save();
 
     if (!company) {
       throw new BadRequestException('No se pudo crear la compañía');
